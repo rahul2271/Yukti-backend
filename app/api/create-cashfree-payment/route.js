@@ -1,4 +1,12 @@
+// app/api/create-cashfree-payment/route.js
+
 export async function POST(req) {
+  const headers = {
+    "Access-Control-Allow-Origin": "https://www.yuktiherbs.com", // allow your Shopify domain
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS"
+  };
+
   try {
     const { name, email, phone, amount, currency } = await req.json();
 
@@ -27,11 +35,32 @@ export async function POST(req) {
     const data = await response.json();
 
     if (data.payment_link) {
-      return Response.json({ success: true, link: data.payment_link });
+      return new Response(JSON.stringify({ success: true, link: data.payment_link }), {
+        status: 200,
+        headers
+      });
     } else {
-      return Response.json({ success: false, message: data.message || "Payment link failed" }, { status: 500 });
+      return new Response(JSON.stringify({ success: false, message: data.message || "Payment link failed" }), {
+        status: 500,
+        headers
+      });
     }
   } catch (error) {
-    return Response.json({ success: false, error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ success: false, error: error.message }), {
+      status: 500,
+      headers
+    });
   }
+}
+
+// CORS preflight response
+export function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "https://www.yuktiherbs.com",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    }
+  });
 }
