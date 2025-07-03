@@ -1,8 +1,8 @@
-// app/api/create-cashfree-payment/route.js
+// ✅ BACKEND: app/api/create-cashfree-payment/route.js
 
 export async function POST(req) {
   const headers = {
-    "Access-Control-Allow-Origin": "https://www.yuktiherbs.com", // allow your Shopify domain
+    "Access-Control-Allow-Origin": "https://www.yuktiherbs.com",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS"
   };
@@ -28,11 +28,12 @@ export async function POST(req) {
           customer_phone: phone,
         },
         order_note: `Consultation by ${name}`,
-        return_url: "https://consultations.yuktiherbs.com/thank-you?order_id={order_id}",
+        return_url: "https://consultations.yuktiherbs.com/thank-you?order_id={order_id}"
       }),
     });
 
     const data = await response.json();
+    console.log("🔥 CASHFREE RESPONSE:", data);
 
     if (data.payment_link) {
       return new Response(JSON.stringify({ success: true, link: data.payment_link }), {
@@ -53,7 +54,6 @@ export async function POST(req) {
   }
 }
 
-// CORS preflight response
 export function OPTIONS() {
   return new Response(null, {
     status: 204,
