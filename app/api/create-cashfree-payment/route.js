@@ -20,7 +20,7 @@ export async function POST(req) {
           customer_phone: phone,
         },
         order_note: `Consultation by ${name}`,
-        return_url: "https://yuktiherbs.com/thank-you?order_id={order_id}",
+        return_url: "https://consultations.yuktiherbs.com/thank-you?order_id={order_id}",
       }),
     });
 
