@@ -10,6 +10,10 @@ export async function POST(req) {
   try {
     const { name, email, phone, amount, currency } = await req.json();
 
+    // Debugging: log loaded env vars
+    console.log("App ID:", process.env.CASHFREE_APP_ID);
+    console.log("Secret Key prefix:", process.env.CASHFREE_SECRET_KEY?.slice(0, 12));
+
     const response = await fetch("https://api.cashfree.com/pg/orders", {
       method: "POST",
       headers: {
@@ -47,6 +51,7 @@ export async function POST(req) {
       });
     }
   } catch (error) {
+    console.error("❌ Backend Error:", error);
     return new Response(JSON.stringify({ success: false, error: error.message }), {
       status: 500,
       headers
